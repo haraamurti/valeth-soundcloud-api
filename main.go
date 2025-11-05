@@ -4,21 +4,22 @@ import (
 	"fmt"
 	"log"
 
+	"valeth-soundcloud-api/routes"
+
 	"github.com/gofiber/fiber/v2"
 )
 
 func main (){
 	app := fiber.New()
-
-	app.Get("/", func (c *fiber.Ctx) error {
-		return c.JSON("Welcome to soundcloud by valeth")
-	})
+	routes.Setup_routes(app)
 
 	//menjalankan server di port 2006
 	fmt.Println()
 	fmt.Println()
 	fmt.Println()
-	log.Println("server started....")
-	app.Listen(":2006")
+	//listen to port
+	var port string = ":2006"
+	log.Println("server started at port" +port + "........")
+	app.Listen(port)
 }
 
