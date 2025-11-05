@@ -12,13 +12,19 @@ import (
 )
 
 func main (){
-	err :=godotenv.Load()
-	if err != nil {
-		log.Fatal("Error: cannot find file .env")
-	}
-	app := fiber.New()
-	database.Init_db()
+
+
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatal("Error: Tidak dapat memuat file .env. Pastikan file ada di root.")
+    }
+
+    database.Init_db()
+
+
+	app:=fiber.New()
 	routes.Setup_routes(app)
+	log.Println("Routes have been assigned")
 
 	//menjalankan server di port 2006
 	fmt.Println()

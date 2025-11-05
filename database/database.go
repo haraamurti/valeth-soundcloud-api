@@ -15,8 +15,6 @@ var DB*gorm.DB
 func Init_db(){
 dsn := os.Getenv("DB_URL")
 
-
-
 if dsn == ""{
 	log.Fatal("Error: Variabel DB_URL does not exsit  in.env")
 }
