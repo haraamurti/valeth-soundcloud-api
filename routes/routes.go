@@ -8,6 +8,5 @@ import (
 
 func Setup_routes (app *fiber.App){
 	app.Get("/",handler.Welcome)
-	
 	app.Get("/tracks",handler.Get_alltracks)
 }
