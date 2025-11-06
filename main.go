@@ -6,6 +6,7 @@ import (
 
 	"valeth-soundcloud-api/database"
 	"valeth-soundcloud-api/routes"
+	"valeth-soundcloud-api/storage"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -19,7 +20,10 @@ func main (){
         log.Fatal("Error: Tidak dapat memuat file .env. Pastikan file ada di root.")
     }
 
+	log.Println("initializing databse and storage bucket............")
     database.Init_db()
+	storage.InitStorage()
+	log.Println("initializing databse and storage bucket succes !")
 
 
 	app:=fiber.New()
