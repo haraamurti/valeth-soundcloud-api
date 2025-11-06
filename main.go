@@ -24,6 +24,7 @@ func main (){
     database.Init_db()
 	storage.InitStorage()
 	log.Println("initializing databse and storage bucket succes !")
+	//akhirnya bisa 
 
 
 	app:=fiber.New()
