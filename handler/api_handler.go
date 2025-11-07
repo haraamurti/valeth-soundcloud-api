@@ -238,5 +238,5 @@ func Delete(c *fiber.Ctx)error{
 				"message": "canot delete file",
 			})
 		}
-		return c.JSON(track)
+		return c.Status(204).JSON(track)
 }
