@@ -138,10 +138,9 @@ func Get_track_by_id (c *fiber.Ctx)error{
 		}
 		return c.JSON(track)
 	}
+//retrieve audio file
 
-	//retrieve audio file
-
-	func Get_track_audio(c *fiber.Ctx)error{
+func Get_track_audio(c *fiber.Ctx)error{
 		id := c.Params("id")
 		var track model.Track
 		result:=database.DB.First(&track, id)
@@ -163,9 +162,9 @@ func Get_track_by_id (c *fiber.Ctx)error{
 
 		}
 
-		//retrive cover url
+//retrive cover url
 
-		func Get_track_cover(c *fiber.Ctx)error{
+func Get_track_cover(c *fiber.Ctx)error{
 		id := c.Params("id")
 		var track model.Track
 		result:=database.DB.First(&track, id)
@@ -185,4 +184,34 @@ func Get_track_by_id (c *fiber.Ctx)error{
 
 		return c.Redirect(track.TrackCoverURL, fiber.StatusFound)
 		}
-	
+
+
+func Edit_title_and_artist (c *fiber.Ctx)error{
+	id := c.Params(":id")
+	var track model.Track
+	result := database.DB.First(&track, id)
+	if result.Error != nil{
+		if errors.Is(result.Error, gorm.ErrRecordNotFound){
+			return c.Status(404).JSON(fiber.Map{
+				"status": "Error",
+				"message": "file not found in database",
+			})
+		}
+		return c.Status(500).JSON(fiber.Map{
+				"status": "Error",
+				"message": "internal server error",
+			})
+		}
+		var input map[string]interface{}
+		if err := c.BodyParser(&input); err != nil {
+    	return c.Status(400).JSON(fiber.Map{
+			"status": "error",
+			"message": "Input JSON tidak valid"})
+		}
+		if err := database.DB.Model(&track).Updates(input).Error; err != nil {
+    		return c.Status(500).JSON(fiber.Map{
+				"status": "error",
+				"message": "Gagal update data"})
+}
+	return c.Status(500).JSON(track)
+}
