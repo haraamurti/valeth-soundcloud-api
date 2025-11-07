@@ -8,8 +8,11 @@ import (
 	"valeth-soundcloud-api/model"
 	"valeth-soundcloud-api/storage"
 
+	"errors"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 
@@ -115,3 +118,32 @@ func CreateTrack(c *fiber.Ctx)error{
 	})
 }
 
+
+func Get_track_by_id (c *fiber.Ctx)error{
+	id := c.Params("id")
+	var track model.Track
+	result:=database.DB.First(&track, id)
+
+	if result.Error != nil{
+		if errors.Is(result.Error, gorm.ErrRecordNotFound){
+			return c.Status(404).JSON(fiber.Map{
+				"status": "Error",
+				"message": "file not found in database",
+			})
+		}
+		return c.Status(500).JSON(fiber.Map{
+				"status": "Error",
+				"message": "internal server error",
+			})
+		}
+		return c.JSON(track)
+	}
+
+	func Get_track_audio(c *fiber.Ctx)error{
+		
+		id := c.Params("id")
+	var track model.Track
+	result:=database.DB.First(&track, id)
+		return c.JSON(track)
+
+	}

@@ -24,10 +24,18 @@ func main (){
     database.Init_db()
 	storage.InitStorage()
 	log.Println("initializing databse and storage bucket succes !")
-	//akhirnya bisa 
+	//akhirnya bisa
 
 
-	app:=fiber.New()
+	//kita menset upload limit to 100 MB
+	maxUploadSize := 100 * 1024 * 1024
+
+    appConfig := fiber.Config{
+        BodyLimit: maxUploadSize,
+    }
+
+    app := fiber.New(appConfig)
+
 	routes.Setup_routes(app)
 	log.Println("Routes have been assigned")
 

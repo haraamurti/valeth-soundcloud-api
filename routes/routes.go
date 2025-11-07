@@ -7,7 +7,16 @@ import (
 )
 
 func Setup_routes (app *fiber.App){
+
+	//get routes
 	app.Get("/",handler.Welcome)
 	app.Get("/tracks",handler.Get_alltracks)
+	app.Get("/tracks/:id",handler.Get_track_by_id)
+	app.Get("/tracks/:id/audio",handler.Get_track_by_id)
+	app.Get("/tracks/:id/cover",handler.Get_track_by_id)
+	
+	//post routes
 	app.Post("/upload-track",handler.CreateTrack)
+
+	
 }
