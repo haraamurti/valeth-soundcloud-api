@@ -12,8 +12,8 @@ func Setup_routes (app *fiber.App){
 	app.Get("/",handler.Welcome)
 	app.Get("/tracks",handler.Get_alltracks)
 	app.Get("/tracks/:id",handler.Get_track_by_id)
-	app.Get("/tracks/:id/audio",handler.Get_track_by_id)
-	app.Get("/tracks/:id/cover",handler.Get_track_by_id)
+	app.Get("/tracks/:id/audio",handler.Get_track_audio)
+	app.Get("/tracks/:id/cover",handler.Get_track_cover)
 	
 	//post routes
 	app.Post("/upload-track",handler.CreateTrack)

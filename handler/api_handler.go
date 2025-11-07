@@ -139,11 +139,50 @@ func Get_track_by_id (c *fiber.Ctx)error{
 		return c.JSON(track)
 	}
 
-	func Get_track_audio(c *fiber.Ctx)error{
-		
-		id := c.Params("id")
-	var track model.Track
-	result:=database.DB.First(&track, id)
-		return c.JSON(track)
+	//retrieve audio file
 
-	}
+	func Get_track_audio(c *fiber.Ctx)error{
+		id := c.Params("id")
+		var track model.Track
+		result:=database.DB.First(&track, id)
+
+		if result.Error != nil{
+		if errors.Is(result.Error, gorm.ErrRecordNotFound){
+			return c.Status(404).JSON(fiber.Map{
+				"status": "Error",
+				"message": "file not found in database",
+			})
+		}
+		return c.Status(500).JSON(fiber.Map{
+				"status": "Error",
+				"message": "internal server error",
+			})
+		}
+
+		return c.Redirect(track.TrackURL, fiber.StatusFound)
+
+		}
+
+		//retrive cover url
+
+		func Get_track_cover(c *fiber.Ctx)error{
+		id := c.Params("id")
+		var track model.Track
+		result:=database.DB.First(&track, id)
+
+		if result.Error != nil{
+		if errors.Is(result.Error, gorm.ErrRecordNotFound){
+			return c.Status(404).JSON(fiber.Map{
+				"status": "Error",
+				"message": "file not found in database",
+			})
+		}
+		return c.Status(500).JSON(fiber.Map{
+				"status": "Error",
+				"message": "internal server error",
+			})
+		}
+
+		return c.Redirect(track.TrackCoverURL, fiber.StatusFound)
+		}
+	
