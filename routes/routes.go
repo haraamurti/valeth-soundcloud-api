@@ -18,8 +18,10 @@ func Setup_routes (app *fiber.App){
 	//post routes
 	app.Post("/upload-track",handler.CreateTrack)
 
-
+	//patch
 	app.Patch("/tracks/:id/edit",handler.Edit_title_and_artist)
 
+	//delete
+	app.Delete("/tracks/:id/delete",handler.Delete)
 	
 }

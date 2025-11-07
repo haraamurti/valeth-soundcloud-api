@@ -209,9 +209,34 @@ func Edit_title_and_artist (c *fiber.Ctx)error{
 			"message": "Input JSON tidak valid"})
 		}
 		if err := database.DB.Model(&track).Updates(input).Error; err != nil {
-    		return c.Status(500).JSON(fiber.Map{
+    	return c.Status(500).JSON(fiber.Map{
 				"status": "error",
 				"message": "Gagal update data"})
 }
-	return c.Status(500).JSON(track)
+	return c.JSON(track)
+}
+
+func Delete(c *fiber.Ctx)error{
+	id := c.Params(":id")
+	var track model.Track
+	result := database.DB.First(&track, id)
+	if result.Error != nil{
+		if errors.Is(result.Error, gorm.ErrRecordNotFound){
+			return c.Status(404).JSON(fiber.Map{
+				"status": "Error",
+				"message": "file not found in database",
+			})
+		}
+		return c.Status(500).JSON(fiber.Map{
+				"status": "Error",
+				"message": "internal server error",
+			})
+		}
+		if err := database.DB.Delete(&track).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"status": "Error",
+				"message": "canot delete file",
+			})
+		}
+		return c.JSON(track)
 }
