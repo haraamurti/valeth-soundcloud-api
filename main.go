@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 
+	"valeth-soundcloud-api/Loading_animation"
 	"valeth-soundcloud-api/database"
 	"valeth-soundcloud-api/routes"
 	"valeth-soundcloud-api/storage"
@@ -20,11 +22,16 @@ func main (){
         log.Fatal("Error: Tidak dapat memuat file .env. Pastikan file ada di root.")
     }
 
+	ctx, cancel := context.WithCancel(context.Background())
+	go Loading_animation.ShowLoadingAnimation(ctx)
+
 	log.Println("initializing databse and storage bucket............")
     database.Init_db()
 	storage.InitStorage()
 	log.Println("initializing databse and storage bucket succes !")
 	//akhirnya bisa
+	cancel()
+
 
 
 	//kita menset upload limit to 100 MB
